@@ -1,5 +1,6 @@
 import io.ngin.pipeline.semver.Component
 
+@NonCPS
 boolean call(String increment, boolean throwOnError) {
   if(Component.find(increment)) {
     return true

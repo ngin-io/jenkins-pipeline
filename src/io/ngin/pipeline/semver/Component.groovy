@@ -1,8 +1,10 @@
 package io.ngin.pipeline.semver
 
+import com.cloudbees.groovy.cps.NonCPS
+
 import groovy.transform.CompileStatic
 
-@CompileStatic
+//@CompileStatic
 enum Component {
     PATCH(2),
     MINOR(1),
@@ -14,7 +16,15 @@ enum Component {
         this.index = index
     }
 
+    @NonCPS
     static Component find(String component) {
-        (Component) Component.find { it -> it.toString().equalsIgnoreCase(component) }
+        // (Component) Component.find { it -> it.toString().equalsIgnoreCase(component) }
+        for(Component it : Component.values()) {
+            if(it.toString().equalsIgnoreCase(component)) {
+                return it
+            }
+        }
+        
+        return null
     }
 }

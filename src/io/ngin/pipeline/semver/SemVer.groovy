@@ -1,18 +1,16 @@
 package io.ngin.pipeline.semver
 
-import groovy.transform.CompileStatic
-import groovy.transform.TypeChecked
-import groovy.transform.TypeCheckingMode
+import com.cloudbees.groovy.cps.NonCPS
 
-@CompileStatic
 class SemVer {
 
-    @TypeChecked(TypeCheckingMode.SKIP)
+    @NonCPS
     static String findTag(String body, String tagName = 'version') {
         def matcher = (body =~ /\[\s*${tagName}\s+(\w*)\s*\]/)
         return matcher ? matcher[0][1] : null
     }
 
+    @NonCPS
     static int[] parse(String version) {
         final GString MESSAGE_BAD_VERSION = "version '$version' was not in the format 'major.minor.patch'"
 
@@ -38,6 +36,7 @@ class SemVer {
         return components
     }
 
+    @NonCPS
     static int[] increment(int[] current, Component level) {
         int[] updated = new int[3]
         System.arraycopy(current, 0, updated, 0, 3)
@@ -53,7 +52,7 @@ class SemVer {
         return updated
     }
 
-    @CompileStatic
+    @NonCPS
     static int[] increment(String current, String level) {
         Component l = Component.find(level)
         if(!l) {
@@ -64,5 +63,4 @@ class SemVer {
 
         return increment(c, l)
     }
-
 }
