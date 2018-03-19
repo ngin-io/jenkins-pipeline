@@ -75,6 +75,6 @@ class SemVer {
 
         static Component find(String component) {
             (Component) Component.find { it -> it.toString().equalsIgnoreCase(component) }
-        }
+        }        
     }
 }
