@@ -1,6 +1,6 @@
 package io.ngin.pipeline.semver
 
-import io.ngin.pipeline.semver.SemVer.Component
+import io.ngin.pipeline.semver.Component
 import spock.lang.Specification
 
 class SemVer_ComponentTest extends Specification {

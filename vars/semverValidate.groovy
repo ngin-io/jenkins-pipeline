@@ -1,4 +1,4 @@
-import io.ngin.pipeline.semver.SemVer.Component
+import io.ngin.pipeline.semver.Component
 
 boolean call(String increment, boolean throwOnError) {
   if(Component.find(increment)) {

@@ -1,9 +1,9 @@
 package io.ngin.pipeline.semver
 
-import static io.ngin.pipeline.semver.SemVer.Component.*
+import static io.ngin.pipeline.semver.Component.*
 import static org.junit.Assert.*
 
-import io.ngin.pipeline.semver.SemVer.Component
+import io.ngin.pipeline.semver.Component
 import spock.lang.Specification
 
 class SemVerTest extends Specification {

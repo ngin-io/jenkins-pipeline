@@ -1,9 +1,13 @@
 package io.ngin.pipeline.semver
 
 import groovy.transform.CompileStatic
+import groovy.transform.TypeChecked
+import groovy.transform.TypeCheckingMode
 
+@CompileStatic
 class SemVer {
 
+    @TypeChecked(TypeCheckingMode.SKIP)
     static String findTag(String body, String tagName = 'version') {
         def matcher = (body =~ /\[\s*${tagName}\s+(\w*)\s*\]/)
         return matcher ? matcher[0][1] : null
@@ -61,20 +65,4 @@ class SemVer {
         return increment(c, l)
     }
 
-    @CompileStatic
-    enum Component {
-        PATCH(2),
-        MINOR(1),
-        MAJOR(0);
-
-        final int index
-
-        private Component(int index) {
-            this.index = index
-        }
-
-        static Component find(String component) {
-            (Component) Component.find { it -> it.toString().equalsIgnoreCase(component) }
-        }        
-    }
 }
