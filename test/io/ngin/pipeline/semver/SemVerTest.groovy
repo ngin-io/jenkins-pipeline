@@ -117,6 +117,17 @@ more stuff [issuetag foo]"""                  || 'here'
         [5, 6, 7] | MINOR || [5, 7, 0]
         [5, 6, 7] | MAJOR || [6, 0, 0]
     }
+    
+    def "toString joins correctly"(int[] integers, String string) {
+        expect:
+        string == new SemVer(integers).toString()
+
+        where:
+        integers                 || string
+        [0, 0, 0]                || '0.0.0'
+        [1, 2, 3]                || '1.2.3'
+        [63475, 2120, 292222000] || '63475.2120.292222000'
+    }
 
     def "end-to-end update test"(String current, String level, int[] expected) {
         given:

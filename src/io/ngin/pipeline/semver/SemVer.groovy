@@ -45,7 +45,7 @@ final class SemVer implements Serializable {
     @Override
     @NonCPS
     String toString() {
-        String.join('.', version)
+        version[0] + '.' + version[1] + '.' + version[2]
     }
 
     @NonCPS
