@@ -50,15 +50,15 @@ body
 more stuff [issuetag foo]"""                  || 'here'
     }
 
-    def "parsing successful for correct versions"(String version, int[] expected) {
+    def "parsing successful for correct versions"(String version, SemVer expected) {
         expect:
         expected == SemVer.parse(version)
 
         where:
         version                || expected
-        '0.0.0'                || [0, 0, 0]
-        '1.2.3'                || [1, 2, 3]
-        '63475.2120.292222000' || [63475, 2120, 292222000]
+        '0.0.0'                || new SemVer([0, 0, 0] as int[])
+        '1.2.3'                || new SemVer([1, 2, 3] as int[])
+        '63475.2120.292222000' || new SemVer([63475, 2120, 292222000] as int[])
     }
 
     def "parsing throws for invalid number of components"(String version) {
@@ -100,8 +100,12 @@ more stuff [issuetag foo]"""                  || 'here'
     }
 
     def "updater returns correct results"(int[] current, Component level, int[] expected) {
+        given:
+        def currentVersion = new SemVer(current)
+        def expectedVersion = new SemVer(expected)
+
         expect:
-        expected == SemVer.increment(current, level)
+        expectedVersion == currentVersion.increment(level)
 
         where:
         current   | level || expected
@@ -115,11 +119,11 @@ more stuff [issuetag foo]"""                  || 'here'
     }
 
     def "end-to-end update test"(String current, String level, int[] expected) {
-        when:
-        int[] updated = SemVer.increment(current, level)
+        given:
+        def expectedVersion = new SemVer(expected)
 
-        then:
-        expected == updated
+        expect:
+        expectedVersion == SemVer.increment(current, level)
 
         where:
         current    | level   || expected

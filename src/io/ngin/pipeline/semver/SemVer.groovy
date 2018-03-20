@@ -1,8 +1,52 @@
 package io.ngin.pipeline.semver
 
+import static java.lang.System.arraycopy
+
 import com.cloudbees.groovy.cps.NonCPS
 
-class SemVer {
+final class SemVer implements Serializable {
+    private static final long serialVersionUID = 1L
+
+    private final int[] version = new int[3]
+
+    SemVer(int[] version) {
+        if(version.length != 3) {
+            throw new IllegalArgumentException('version must have 3 numeric parts')
+        }
+
+        arraycopy(version, 0, this.version, 0, 3)
+    }
+
+    @NonCPS
+    SemVer increment(Component component) {
+        SemVer updated = new SemVer(version)
+
+        Component.each { Component it ->
+            if(it < component) {
+                updated.version[it.index] = 0
+            } else if(it == component) {
+                updated.version[it.index]++
+            } // else do nothing
+        }
+
+        return updated
+    }
+
+    @Override
+    @NonCPS
+    boolean equals(Object o) {
+        if(!(o instanceof SemVer)) {
+            return false
+        }
+
+        version == ((SemVer) o).version
+    }
+
+    @Override
+    @NonCPS
+    String toString() {
+        String.join('.', version)
+    }
 
     @NonCPS
     static String findTag(String body, String tagName = 'version') {
@@ -11,7 +55,7 @@ class SemVer {
     }
 
     @NonCPS
-    static int[] parse(String version) {
+    static SemVer parse(String version) {
         final GString MESSAGE_BAD_VERSION = "version '$version' was not in the format 'major.minor.patch'"
 
         String[] stringParts = version.split('\\.')
@@ -33,34 +77,18 @@ class SemVer {
             throw new IllegalArgumentException(MESSAGE_BAD_VERSION, nfe)
         }
 
-        return components
+        return new SemVer(components)
     }
 
     @NonCPS
-    static int[] increment(int[] current, Component level) {
-        int[] updated = new int[3]
-        System.arraycopy(current, 0, updated, 0, 3)
-
-        Component.each { Component it ->
-            if(it < level) {
-                updated[it.index] = 0
-            } else if(it == level) {
-                updated[it.index]++
-            } // else do nothing
-        }
-
-        return updated
-    }
-
-    @NonCPS
-    static int[] increment(String current, String level) {
+    static SemVer increment(String current, String level) {
         Component l = Component.find(level)
         if(!l) {
             throw new IllegalArgumentException("update level '$level' is not one of patch, minor, major")
         }
 
-        int[] c = parse(current)
+        SemVer c = parse(current)
 
-        return increment(c, l)
+        return c.increment(l)
     }
 }
