@@ -1,7 +1,5 @@
 package io.ngin.pipeline.semver
 
-import static java.lang.System.arraycopy
-
 import com.cloudbees.groovy.cps.NonCPS
 
 final class SemVer implements Serializable {
@@ -14,7 +12,10 @@ final class SemVer implements Serializable {
             throw new IllegalArgumentException('version must have 3 numeric parts')
         }
 
-        arraycopy(version, 0, this.version, 0, 3)
+        // System.arraycopy isn't whitelisted, and we know we need exactly three bits
+        this.version[0] = version[0]
+        this.version[1] = version[1]
+        this.version[2] = version[2]
     }
 
     @NonCPS
