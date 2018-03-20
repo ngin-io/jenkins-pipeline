@@ -1,4 +1,4 @@
-def call(boolean condition, String errorMessage, String errors) {
+def call(boolean condition, String errorMessage, List<String> errors) {
   if(!condition) {
     errors << errorMessage
     if(currentBuild.resultIsBetterOrEqualTo('UNSTABLE')) {
