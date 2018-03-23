@@ -17,13 +17,13 @@ class SemVerTest extends Specification {
 
         where:
         body                                  | tagName      || value
-        '[version major]'                     | 'version'    || 'major'
+        '[VERSION major]'                     | 'version'    || 'major'
         '[version major]'                     | 'notpresent' || null
         '[version minor][ semver foobar    ]' | 'semver'     || 'foobar'
         """Long
 multiline
 body
-[version 
+[Version 
   here 
  ]
 more stuff [issuetag foo]"""                  | 'version'    || 'here'
@@ -40,11 +40,11 @@ more stuff [issuetag foo]"""                  | 'version'    || 'here'
         body                                  || value
         '[version major]'                     || 'major'
         '[semver major]'                      || null
-        '[  version  minor  ][semver foobar]' || 'minor'
+        '[  Version  minor  ][semver foobar]' || 'minor'
         """Long
 multiline
 body
-[version 
+[verSIOn 
   here 
  ]
 more stuff [issuetag foo]"""                  || 'here'

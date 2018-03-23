@@ -51,7 +51,7 @@ final class SemVer implements Serializable {
 
     @NonCPS
     static String findTag(String body, String tagName = 'version') {
-        def matcher = (body =~ /\[\s*${tagName}\s+(\w*)\s*\]/)
+        def matcher = (body =~ /(?i)\[\s*${tagName}\s+(\w*)\s*\]/)
         return matcher ? matcher[0][1] : null
     }
 
