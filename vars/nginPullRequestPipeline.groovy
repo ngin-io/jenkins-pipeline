@@ -78,11 +78,20 @@ def call(Map parameters = [:]) {
             expression { currentBuild.resultIsBetterOrEqualTo('SUCCESS') }
           }
         }
-        steps {
-          gitPush()
 
-          deployArtifacts buildInfo: buildInfo, deployer: rtMaven.deployer
-          publishBuildInfo buildInfo: buildInfo, server: artifactory
+        parallel {
+          stage('Close pull request') {
+            steps {
+              gitPush()
+            }
+          }
+
+          stage('Upload to Artifactory') {
+            steps {
+              deployArtifacts buildInfo: buildInfo, deployer: rtMaven.deployer
+              publishBuildInfo buildInfo: buildInfo, server: artifactory
+            }
+          }
         }
       }
     }
