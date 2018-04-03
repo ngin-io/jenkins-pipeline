@@ -3,7 +3,8 @@ def call(artifactory, rtMaven, buildInfo,
     releaseRepo = 'libs-release-local', mavenTool = 'maven3') {
   script {
     rtMaven.tool = 'maven3'
-    rtMaven.deployer releaseRepo: 'libs-release-local', server: artifactory
+    rtMaven.resolver server: artifactory, releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot'
+    rtMaven.deployer server: artifactory, releaseRepo: 'libs-release-local'
     rtMaven.deployer.deployArtifacts = false
 
     [
