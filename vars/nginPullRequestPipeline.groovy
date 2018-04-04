@@ -58,7 +58,8 @@ def call(Map parameters = [:]) {
       stage('Build') {
         steps {
           nginConfigureArtifactory(artifactory, rtMaven, buildInfo)
-          artifactoryMavenBuild pom: 'pom.xml', goals: 'clean package', mavenBuild: rtMaven, buildInfo: buildInfo
+          // install is needed rather than package: https://www.jfrog.com/jira/projects/HAP/issues/HAP-957
+          artifactoryMavenBuild pom: 'pom.xml', goals: 'clean install', mavenBuild: rtMaven, buildInfo: buildInfo
         }
       }
 
