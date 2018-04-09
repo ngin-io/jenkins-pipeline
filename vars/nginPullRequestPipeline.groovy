@@ -35,6 +35,7 @@ def call(Map parameters = [:]) {
           script {
             // https://github.com/cloudbees/groovy-cps/issues/89
             boolean ff = gitCanFastForward()
+            echo "ff: $ff"
             unstableUnless(ff, "unable to fast-forward this branch onto $UPSTREAM_BRANCH".toString(), problems)
 
             if(unstableUnless(semverValidate(SEMVER_INCREMENT, readyForMerge()), "expected valid version increment but was $SEMVER_INCREMENT".toString(), problems)) {
