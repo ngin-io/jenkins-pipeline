@@ -94,6 +94,12 @@ def call(Map parameters = [:]) {
               publishBuildInfo buildInfo: buildInfo, server: artifactory
             }
           }
+
+          stage('Archive jar file(s)') {
+            steps {
+              archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
+            }
+          }
         }
       }
     }
