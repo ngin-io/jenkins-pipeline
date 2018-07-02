@@ -97,7 +97,7 @@ def call(Map parameters = [:]) {
 
           stage('Archive jar file(s)') {
             steps {
-              archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
+              archiveArtifacts artifacts: '**/target/*.jar,**/target/*.war', fingerprint: true
             }
           }
         }
