@@ -64,6 +64,21 @@ def call(Map parameters = [:]) {
         }
       }
 
+      stage('Clear cache') {
+        when {
+          not {
+            expression { readyForMerge() }
+          }
+        }
+
+        steps {
+          script {
+            echo 'This is a validation build; deleting build artifacts from Maven cache.'
+            artifactoryMavenBuild pom: 'pom.xml', goals: '-Dbuildhelper.removeAll=false build-helper:remove-project-artifact', mavenBuild: rtMaven, buildInfo: buildInfo
+          }
+        }
+      }
+
       stage('Report') {
         steps {
           script {
