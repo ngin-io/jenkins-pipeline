@@ -74,7 +74,7 @@ def call(Map parameters = [:]) {
         steps {
           script {
             echo 'This is a validation build; deleting build artifacts from Maven cache.'
-            artifactoryMavenBuild pom: 'pom.xml', goals: '-Dbuildhelper.removeAll=false build-helper:remove-project-artifact', mavenBuild: rtMaven, buildInfo: buildInfo
+            artifactoryMavenBuild pom: 'pom.xml', goals: '-Dbuildhelper.removeAll=true build-helper:remove-project-artifact', mavenBuild: rtMaven, buildInfo: buildInfo
           }
         }
       }
