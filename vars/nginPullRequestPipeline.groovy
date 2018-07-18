@@ -9,6 +9,8 @@ def call(Map parameters = [:]) {
   def rtMaven = newMavenBuild()
   def buildInfo = newBuildInfo()
 
+  hudson.tasks.junit.TestResultSummary testResults
+
   pipeline {
     agent any
 
@@ -81,10 +83,7 @@ def call(Map parameters = [:]) {
 
       stage('Report') {
         steps {
-          script {
-            String message = currentBuild.resultIsBetterOrEqualTo('SUCCESS') ? 'Build succeeded.' : "There were problems with the build: $problems"
-            setGitHubPullRequestStatus message: message, context: JOB_NAME, state: currentBuild.currentResult
-          }
+          gitHubPrUpdate(problems)
         }
       }
 
@@ -121,13 +120,10 @@ def call(Map parameters = [:]) {
 
     post {
       always {
-        junit '**/target/surefire-reports/**.xml'
+        script { testResults = junit '**/target/surefire-reports/**.xml' }
         echo "problems: $problems"
 
-        script {
-          String message = currentBuild.resultIsBetterOrEqualTo('SUCCESS') ? 'Build succeeded.' : "There were problems with the build: $problems"
-          setGitHubPullRequestStatus message: message, context: JOB_NAME, state: currentBuild.currentResult
-        }
+        gitHubPrUpdate(problems)
       }
 
       success {
