@@ -8,9 +8,7 @@ def call(nextVersion = nextVersion, problems = problems, test = testResults, mer
   String TEST_REPORT_URL = BUILD_URL + 'testReport/'
   String testResults = "<$TEST_REPORT_URL|Test results:> $test.passCount passed, $test.failCount failed, $test.skipCount skipped"
 
-//  throw new RuntimeException("boo")
-
-  String message = """*$JOB_NAME*: $existingVersion ⟶ $nextVersion
+  String message = """*<$BUILD_URL|$JOB_NAME>*: $existingVersion ⟶ $nextVersion
 $status
 $testResults"""
 
