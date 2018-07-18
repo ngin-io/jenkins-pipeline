@@ -120,7 +120,11 @@ def call(Map parameters = [:]) {
 
     post {
       always {
-        script { testResults = junit '**/target/surefire-reports/**.xml' }
+        script {
+          testResults = junit '**/target/surefire-reports/**.xml'
+          if(testResults.failCount) problems << "$testResults.failCount failing test(s)"
+        }
+
         echo "problems: $problems"
 
         gitHubPrUpdate(problems)
