@@ -5,11 +5,12 @@ def call(Map parameters = [:]) {
   def problems = []
   String nextVersion = null
 
+  hudson.tasks.junit.TestResultSummary testResults
+  def merged = null
+
   def artifactory = getArtifactoryServer('ngin-artifactory')
   def rtMaven = newMavenBuild()
   def buildInfo = newBuildInfo()
-
-  hudson.tasks.junit.TestResultSummary testResults
 
   pipeline {
     agent any
@@ -99,6 +100,7 @@ def call(Map parameters = [:]) {
           stage('Close pull request') {
             steps {
               gitPush()
+              script { merged = true }
             }
           }
 
@@ -127,6 +129,7 @@ def call(Map parameters = [:]) {
 
         echo "problems: $problems"
 
+        nginSlackReport(nextVersion, problems, testResults, merged)
         gitHubPrUpdate(problems)
       }
 
