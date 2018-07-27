@@ -45,8 +45,29 @@ final class SemVer implements Serializable {
 
     @Override
     @NonCPS
+    int hashCode() {
+        version[0] + 31 * (version[1] + 31 * version[2])
+    }
+
+    @Override
+    @NonCPS
     String toString() {
         version[0] + '.' + version[1] + '.' + version[2]
+    }
+
+    @NonCPS
+    int major() {
+        version[0]
+    }
+
+    @NonCPS
+    int minor() {
+        version[1]
+    }
+
+    @NonCPS
+    int patch() {
+        version[2]
     }
 
     @NonCPS
