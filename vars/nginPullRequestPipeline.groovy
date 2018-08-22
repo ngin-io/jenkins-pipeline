@@ -17,7 +17,7 @@ def call(Map parameters = [:]) {
 
     tools {
       maven 'maven3'
-      jdk parameters.get('jdk', 'jdk8')
+      jdk parameters.get('jdk', 'jdk9')
     }
 
     environment {
